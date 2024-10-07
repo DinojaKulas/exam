@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member</title>
+    <style>
+        /*--------------Table-------------*/
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /*----------------------------------*/
+        /* Modal background */
+        .modal {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Close button */
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Modal title */
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        /* Modal body */
+        .modal-body {
+            font-size: 18px;
+        }
+
+
+
+        /*-----------------------------------------------------*/
+
+        /*Add-Button*/
+        #addBtn {
+            display: block;
+            margin-right: auto;
+            margin-left: 100px;
+        }
+
+        #openModalBtn {
+            display: flex;
+            margin-right: auto;
+            margin-left: 90%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Trigger Button -->
+    <button id="openModalBtn">Add-Member</button>
+
+    <!-- Modal Structure -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-title">Members Details</h2>
+            <div class="modal-body">
+
+                <table>
+                    <tr>
+                        <td><label for="newId">ID</label></td>
+                        <td><input type="text" id="newId" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newfirstName">FirstName</label></td>
+                        <td><input type="text" id="newfirstName" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newlastName">LastName</label></td>
+                        <td><input type="text" id="newlastName"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newdateOfBirth">DateOfBirth</label></td>
+                        <td><input type="text" id="newdateOfBirth"></td>
+                    </tr>
+                </table>
+
+                <button class="modal-button" onclick="addnewCustomer()">AddCustomer</button>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <h2>Members Details</h2>
+    <div>
+        <table id="member-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+
+            </tbody>
+        </table>
+    </div>
+
+    
+    <script>
+        let tableBody = document.querySelector("#member-table tbody")
+
+        let members = JSON.parse(localStorage.getItem('members')) || 
+        [
+            {
+                "id": "M001",
+                "firstName": "John",
+                "lastName": "Doe",
+                "dateOfBirth": "1990-05-15",
+                "image": "member1.jpg"
+            },
+            {
+                "id": "M002",
+                "firstName": "Jane",
+                "lastName": "Smith",
+                "dateOfBirth": "1985-08-22",
+                "image": "member2.jpg"
+            },
+            {
+                "id": "M003",
+                "firstName": "Michael",
+                "lastName": "Johnson",
+                "dateOfBirth": "1992-11-30",
+                "image": "member3.jpg"
+            },
+            {
+                "id": "M004",
+                "firstName": "Emily",
+                "lastName": "Williams",
+                "dateOfBirth": "1995-04-10",
+                "image": "member4.jpg"
+            },
+            {
+                "id": "M005",
+                "firstName": "Nelson",
+                "lastName": "Mandella",
+                "dateOfBirth": "1965-04-17",
+                "image": "member5.jpg"
+            }
+        ];
+
+        members.forEach(member => {
+            let tableRow = document.createElement('tr');
+            tableRow.innerHTML = `
+                <td> ${member.id}</td>
+                <td> ${member.firstName}</td>
+                <td> ${member.lastName}</td>
+                <td> ${member.dateOfBirth}</td>
+                <td> <img src="${member.image}" width="60px"></td>
+                `;
+
+            tableBody.appendChild(tableRow);
+        });
+        localStorage.setItem("members", JSON.stringify(members));
+
+
+
+
+
+        /*-------------------------------Model-----------------------------------*/
+
+        // Get modal element
+        const modal = document.getElementById("myModal");
+        // Get open modal button
+        const openModalBtn = document.getElementById("openModalBtn");
+        // Get close button (the "x")
+        const closeBtn = document.querySelector(".close-btn");
+        // Open modal when the button is clicked
+        openModalBtn.addEventListener("click", () => {
+            modal.style.display = "block";
+        });
+        // Close modal when the close button is clicked
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+        // Close modal when clicking anywhere outside of the modal content
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+
+
+
+
+
+
+        function addnewCustomer() {
+            const newId = document.getElementById('newId');
+            const newfirstName = document.getElementById('newfirstName');
+            const newlastName = document.getElementById('newlastName');
+            const newdateOfBirth = document.getElementById('newdateOfBirth');
+
+            //get value
+            let id = newId.value;
+            let firstName = newfirstName.value;
+            let lastName = newlastName.value;
+            let dateOfBirth = newdateOfBirth.value;
+
+
+            const CustomerTableData = JSON.parse(localStorage.getItem('members')) || [];
+            if (id && firstName && lastName && dateOfBirth) {
+                const newCustomer =
+                {
+                    id: newId.value,
+                    firstName: newfirstName.value,
+                    lastName: newlastName.value,
+                    dateOfBirth: newdateOfBirth.value
+                }
+
+                CustomerTableData.push(newCustomer);
+
+                localStorage.setItem('members', JSON.stringify(CustomerTableData));
+
+
+                alert("Customer Added Sussussfully!");
+                // Clear form fields
+                newId.value = '';
+                newfirstName.value = '';
+                newlastName.value = '';
+                newdateOfBirth.value = '';
+
+                // Update the table immediately
+                getNewCustomers();
+
+                // Close the modal
+                closemodel();
+
+            }
+            else {
+                alert("Please fill in all fields.");
+            }
+            
+        }
+        
+        function closemodel() {
+            const closeModel = document.getElementById('myModal');
+            closeModel.style.display = 'none';
+        }
+        window.onload = getNewCustomers;
+     
+
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+

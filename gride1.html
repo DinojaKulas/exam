@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Grid</title>
+
+
+<style>
+    #container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .bike-Card {
+        padding: 20px;
+        box-shadow: 2px;
+        width: 250px;
+        text-align: center;
+        background-color: black;
+        color: white;
+
+    }
+
+    .bike-Card img {
+        width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- grid will be added here -->
+    </div>
+
+    <script>
+        const bikes = JSON.parse(localStorage.getItem('BIKE-DATA')) || [
+            // Example bike data if localStorage is empty
+            {
+                "bikeId": "BIKE001",
+                "bikeName": "Harley-Davidson Street 750",
+                "yearOfManufacture": "2022",
+                "registrationNumber": "HD1234",
+                "image": "images/img4.jpg"
+            },
+            {
+                "bikeId": "BIKE002",
+                "bikeName": "Yamaha YZF-R3",
+                "yearOfManufacture": "2021",
+                "registrationNumber": "YZ5678",
+                "image": "images/img4.jpg"
+            },
+            {
+                "bikeId": "BIKE003",
+                "bikeName": "Kawasaki Ninja 400",
+                "yearOfManufacture": "2020",
+                "registrationNumber": "KN9101",
+                "image": "images/img4.jpg"
+            },
+            {
+                "bikeId": "BIKE004",
+                "bikeName": "Ducati Panigale V2",
+                "yearOfManufacture": "2023",
+                "registrationNumber": "DP3456",
+                "image": "images/img4.jpg"
+            }
+        ];
+
+        const grid = document.getElementById('container');
+
+        function addNewBike() {
+            bikes.forEach(bike => {
+                const newDiv = document.createElement('div');
+                newDiv.classList.add('bike-Card');
+
+                newDiv.innerHTML = `
+                    <div>Bike ID: ${bike.bikeId}</div>
+                    <div>Bike Name: ${bike.bikeName}</div>
+                    <div>Year: ${bike.yearOfManufacture}</div>
+                    <div>Registration: ${bike.registrationNumber}</div>
+                    <div><img src="${bike.image}"></div>
+                `;
+
+
+
+
+
+                newDiv.onclick = () => {
+                    window.location.href = `./bikes_rent-3.html?bikeid=${bike.bikeId}`;
+                }
+
+
+
+                grid.appendChild(newDiv);
+            });
+        }
+
+        addNewBike();
+    </script>
+</body>
+
+</html>

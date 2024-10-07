@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inline Table with Divs</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Table container styling */
+        #table-container {
+            width: 80%;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        /* Table row styling */
+        .table-header,
+        .table-row {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-header {
+            background-color: #eee;
+            font-weight: bold;
+        }
+
+        .table-cell {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-right: 1px solid #ddd;
+        }
+
+        .table-cell:last-child {
+            border-right: none;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            display: block;
+            margin: 20px auto;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Dynamic Inline Table</h2>
+    <!-- Table Container -->
+    <div id="table-container">
+        <div class="table-header">
+            <div class="table-cell">Member</div>
+            <div class="table-cell">renting date</div>
+            <div class="table-cell"> number of lending days</div>
+            <div class="table-cell">Actions</div>
+        </div>
+        <!-- First row -->
+        <div class="table-row">
+            <div class="table-cell">
+                <select>
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                </select>
+            </div>
+            <div class="table-cell"><input type="date" /></div>
+            <div class="table-cell"><input type="number" placeholder="0" /></div>
+            <div class="table-cell"><button class="delete-btn">Delete</button></div>
+        </div>
+    </div>
+    <!-- Add button -->
+    <button id="add-row-btn" class="add-btn">Add Row</button>
+    <script>
+        // Get references to the add button and table container
+        const addRowBtn = document.getElementById("add-row-btn");
+        const tableContainer = document.getElementById("table-container");
+        // Add event listener to add a new row
+        addRowBtn.addEventListener("click", () => {
+            const newRow = document.createElement("div");
+            newRow.classList.add("table-row");
+            // Add columns to the new row
+            newRow.innerHTML = `
+<div class="table-cell">
+<select>
+<option value="option1">Option 1</option>
+<option value="option2">Option 2</option>
+<option value="option3">Option 3</option>
+</select>
+</div>
+<div class="table-cell">
+<input type="date" />
+</div>
+<div class="table-cell">
+<input type="number" placeholder="0" />
+</div>
+<div class="table-cell">
+<button class="delete-btn">Delete</button>
+</div>
+`;
+            // Append the new row to the table container
+            tableContainer.appendChild(newRow);
+            // Attach event listener to the new delete button
+            newRow.querySelector(".delete-btn").addEventListener("click", () => {
+                newRow.remove();
+            });
+        });
+        // Attach event listener to existing delete button
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.target.closest(".table-row").remove();
+            });
+        });
+    </script>
+</body>
+
+</html>
